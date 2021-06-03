@@ -55,7 +55,7 @@ export function updateJsonSpec(json) {
   return {type: UPDATE_JSON, payload: json}
 }
 
-export const parseToJson = (str) => ({specActions, specSelectors, errActions}) => {
+export const parseToJson = (str) => ({specActions, specSelectors, errActions, getConfigs}) => {
   let { specStr } = specSelectors
 
   let json = null
@@ -74,6 +74,9 @@ export const parseToJson = (str) => ({specActions, specSelectors, errActions}) =
     })
   }
   if(json && typeof json === "object") {
+    if(json.servers == null || json.servers.size == 0){
+      json.servers = getConfigs().servers
+    }
     return specActions.updateJsonSpec(json)
   }
   return {}
